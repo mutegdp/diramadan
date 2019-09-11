@@ -1,0 +1,15 @@
+homepage: https://canopy.co/
+details: https://canopy.co/product/39576
+explore new: https://canopy.co/explore/new
+explore popular: https://canopy.co/explore/popular
+profile: https://canopy.co/mutegdp
+edit profile: https://canopy.co/mutegdp/edit
+about: https://canopy.co/about
+add product: https://canopy.co/add-products
+
+press: https://canopy.co/press
+categories: https://canopy.co/shop/categories
+gift: https://canopy.co/shop/gifts
+brands: https://canopy.co/shop/brands
+featured: https://canopy.co/featured
+interest: https://canopy.co/interests

@@ -1,0 +1,11 @@
+[
+{
+  "model": "main.producttag",
+  "fields": {
+    "name": "Books",
+    "slug": "books",
+    "description": "The books collections of the site.",
+    "active": true
+  }
+}
+]

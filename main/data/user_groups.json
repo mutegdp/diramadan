@@ -1,0 +1,58 @@
+[
+    {
+        "model": "auth.group",
+        "fields": {
+            "name": "Employees",
+            "permissions": [
+                [
+                    "add_product",
+                    "main",
+                    "product"
+                ],
+                [
+                    "change_product",
+                    "main",
+                    "product"
+                ],
+                [
+                    "delete_product",
+                    "main",
+                    "product"
+                ],
+                [
+                    "add_productimage",
+                    "main",
+                    "productimage"
+                ],
+                [
+                    "change_productimage",
+                    "main",
+                    "productimage"
+                ],
+                [
+                    "delete_productimage",
+                    "main",
+                    "productimage"
+                ],
+                [
+                    "change_producttag",
+                    "main",
+                    "producttag"
+                ]
+            ]
+        }
+    },
+    {
+        "model": "auth.group",
+        "fields": {
+            "name": "Dispatchers",
+            "permissions": [
+                [
+                    "change_product",
+                    "main",
+                    "product"
+                ]
+            ]
+        }
+    }
+]

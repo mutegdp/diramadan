@@ -1,0 +1,40 @@
+copy the canopy:
+    feature:
+        ☐ add this project to version control @critical 
+        ☐ update data by click
+        ☐ update data by bulk (via admin)
+        crud:
+            ✔ create @done(19-09-10 00:58)
+            ✔ read @done(19-09-10 00:58)
+            ☐ update
+            ☐ delete
+    homepage:
+        https://canopy.co/
+        ☐ desain 
+        ☐ filter by topic 
+    details:
+        https://canopy.co/product/8022
+        ✔ scrape data @done(19-09-10 00:57)
+        ☐ desain  
+        ☐ add total page view counter 
+    explore new: 
+        https://canopy.co/explore/new
+        ☐ same as homepage, sort by new 
+        ☐ add filter 
+    explore popular: 
+        https://canopy.co/explore/popular
+        ☐ same with homepage, sort by popular
+    profile: 
+        https://canopy.co/mutegdp
+        ☐ desain 
+    edit profile: 
+        https://canopy.co/mutegdp/edit
+        ☐ editor views   
+        ☐ desain   
+    about: 
+        https://canopy.co/about
+        ☐ desain   
+    add product: 
+        https://canopy.co/add-products
+        ☐ desain   
+        ✔ add product views @done(19-09-10 01:00)

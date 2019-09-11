@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Diramadan.com - {{ object.name }} only {{ object.price }} on Amazon{% endblock title %}
+
+{% block content %}
+<h1 class="text-center">Product</h1>
+<table class="table">
+    <tr>
+        <th class="col-2">Name</th>
+        <td class="col-10">{{ object.name }}</td>
+    </tr>
+    <tr>
+        <th>Product URL</th>
+        <td>{{ object.product_origin }}</td>
+    </tr>
+    <tr>
+        <th>Cover images</th>
+        <td>
+            <img src="{{ object.image }}" alt="cover" />
+        </td>
+    </tr>
+    <tr>
+        <th>Price</th>
+        <td>{{ object.price }}</td>
+    </tr>
+    <tr>
+        <th class="">BY</th>
+        <td>{{ object.seller }}</td>
+    </tr>
+    <tr>
+        <th class="">Rating</th>
+        <td>{{ object.rating }}</td>
+    </tr>
+    <tr>
+        <th>Found by</th>
+        <td>{{ object.found_by }}</td>
+    </tr>
+    <tr>
+        <th>Tags</th>
+        <td>{{ object.tags.all|join:","|default:"No tags available" }}</td>
+    </tr>
+    <tr>
+        <th>In stock</th>
+        <td>{{ object.in_stock|yesno|capfirst }}</td>
+    </tr>
+    <tr>
+        <th>Updated</th>
+        <td>{{ object.date_updated|date:"d F Y" }}</td>
+    </tr>
+</table>
+{% endblock content %}
