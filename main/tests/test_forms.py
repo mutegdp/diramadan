@@ -27,6 +27,7 @@ class TestForm(TestCase):
         form = forms.UserCreationForm(
             {
                 "email": "user@domain.com",
+                "username": "cobaah",
                 "password1": "abcabcabc",
                 "password2": "abcabcabc",
             }
