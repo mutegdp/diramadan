@@ -39,6 +39,14 @@
                     <a class="nav-link {% if request.path == '/{{ request.user.username }}' %}active{% endif %}"
                         href="/{{ request.user.username }}">Profile</a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/login/' %}active{% endif %}" href="/login/">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/signup/' %}active{% endif %}" href="/signup/">Sign
+                        Up</a>
+                </li>
                 {% endif %}
             </ul>
         </div>
