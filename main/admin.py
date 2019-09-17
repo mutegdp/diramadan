@@ -5,7 +5,7 @@ from . import models
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug", "image", "in_stock", "price")
+    list_display = ("name", "slug", "in_stock", "price")
     list_filter = ("in_stock", "date_updated")
     list_editable = ("in_stock",)
     search_fields = ("name",)

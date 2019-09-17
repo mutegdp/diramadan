@@ -51,11 +51,10 @@ class User(AbstractUser):
         ),
         validators=[
             validators.RegexValidator(
-                r"^[\w.@+-]+$",
+                r"^[\w]+$",
                 _(
                     "Enter a valid username. "
-                    "This value may contain only letters, numbers "
-                    "and @/./+/-/_ characters."
+                    "This value may contain only letters, and numbers characters."
                 ),
                 "invalid",
             )
@@ -75,10 +74,10 @@ class Product(models.Model):
     price = models.CharField(max_length=50)
     product_origin = models.URLField()
     seller = models.CharField(max_length=50, blank=True)
-    found_by = models.CharField(max_length=50, blank=True)
+    found_by = models.OneToOneField(User, on_delete=models.CASCADE)
     tags = models.ManyToManyField("ProductTag", blank=True)
     rating = models.CharField(max_length=100, blank=True)
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
     in_stock = models.BooleanField(default=True)
     image = models.ImageField(blank=True)
     date_created = models.DateTimeField(auto_now_add=True)

@@ -1,6 +1,6 @@
 copy the canopy:
     bugs:
-        ☐ product url in product detail is error for some format example http://www.amazon.com/dp/B00E49J8TW/?tag=canopyco-20 @critical 
+        ✔ product url in product detail is error for some format example http://www.amazon.com/dp/B00E49J8TW/?tag=canopyco-20 @critical @done(19-09-17 19:34)
     feature:
         ✔ add this project to version control @critical @done(19-09-17 12:36)
         ☐ update data by click
@@ -8,8 +8,6 @@ copy the canopy:
         crud:
             ✔ create @done(19-09-10 00:58)
             ✔ read @done(19-09-10 00:58)
-            ☐ update
-            ☐ delete
     homepage:
         https://canopy.co/
         ☐ desain 

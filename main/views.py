@@ -6,13 +6,14 @@ from django import forms as django_forms
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.utils import IntegrityError
 from django.forms.utils import ErrorList
-from django.shortcuts import get_object_or_404, Http404
+from django.shortcuts import Http404, get_object_or_404
+from django.views.generic.detail import DetailView
 
 # from django.http import HttpResponseRedirect
-from django.views.generic.edit import CreateView, UpdateView, FormView
+from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
 
 from main import forms, models
 
@@ -36,25 +37,6 @@ class HomepageView(ListView):
 
     def get_queryset(self):
         products = models.Product.objects.all()
-        return products.order_by("name")
-
-
-class ProductListView(ListView):
-    template_name = "main/product_list.html"
-    paginate_by = 4
-
-    def get_queryset(self):
-        tag = self.kwargs["tag"]
-        self.tag = None
-
-        if tag != "all":
-            self.tag = get_object_or_404(models.ProductTag, slug=tag)
-
-        if self.tag:
-            products = models.Product.objects.filter(tags=self.tag)
-        else:
-            products = models.Product.objects.all()
-
         return products.order_by("name")
 
 
@@ -101,6 +83,8 @@ class ProductCreate(LoginRequiredMixin, CreateView):
         url = form.cleaned_data["product_origin"]
         if "/ref=" in url:
             url = url.split("/ref=")[0]
+        elif "?" in url:
+            url = url.split("?")[0]
         if not url.endswith("/"):
             url += "/"
         result = requests.get(url, headers=headers)
@@ -141,9 +125,7 @@ class ProductCreate(LoginRequiredMixin, CreateView):
                     form.instance.price = price
                     form.instance.image = image
                     form.instance.seller = seller
-                    form.instance.found_by = (
-                        f"{self.request.user.first_name} {self.request.user.last_name}"
-                    )
+                    form.instance.found_by = self.request.user
                     form.instance.product_origin = url
                     form.instance.rating = rating
                     return super().form_valid(form)
@@ -152,6 +134,11 @@ class ProductCreate(LoginRequiredMixin, CreateView):
                         ["Can't scrape this product, please try another one!"]
                     )
                     return self.form_invalid(form)
+        except IntegrityError:
+            form._errors[django_forms.forms.NON_FIELD_ERRORS] = ErrorList(
+                ["Can't add this product, product with this URL already exist!"]
+            )
+            return self.form_invalid(form)
         except Exception:
             import traceback
 
@@ -162,7 +149,26 @@ class ProductCreate(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
 
 
-class ProfileDetailView(DetailView):
+class ProductListView(ListView):
+    template_name = "main/product_list.html"
+    paginate_by = 4
+
+    def get_queryset(self):
+        tag = self.kwargs["tag"]
+        self.tag = None
+
+        if tag != "all":
+            self.tag = get_object_or_404(models.ProductTag, slug=tag)
+
+        if self.tag:
+            products = models.Product.objects.filter(tags=self.tag)
+        else:
+            products = models.Product.objects.all()
+
+        return products.order_by("name")
+
+
+class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = models.User
     template_name = "main/profile/read_profile.html"
 
@@ -170,10 +176,11 @@ class ProfileDetailView(DetailView):
         username = self.kwargs.get("username")
         if username is None:
             raise Http404
-        return get_object_or_404(models.User, username__iexact=username)
+        user = get_object_or_404(models.User, username__iexact=username)
+        return user
 
 
-class ProfileUpdateView(UpdateView):
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = models.User
     form_class = forms.ProfileForm
     template_name = "main/profile/update_profile.html"
@@ -183,4 +190,7 @@ class ProfileUpdateView(UpdateView):
         username = self.kwargs.get("username")
         if username is None:
             raise Http404
-        return get_object_or_404(models.User, username__iexact=username)
+        user = get_object_or_404(models.User, username__iexact=username)
+        if self.request.user.username != user.username:
+            raise Http404
+        return user
