@@ -1,6 +1,8 @@
 copy the canopy:
+    bugs:
+        ☐ product url in product detail is error for some format example http://www.amazon.com/dp/B00E49J8TW/?tag=canopyco-20 @critical 
     feature:
-        ☐ add this project to version control @critical 
+        ✔ add this project to version control @critical @done(19-09-17 12:36)
         ☐ update data by click
         ☐ update data by bulk (via admin)
         crud:
@@ -26,15 +28,17 @@ copy the canopy:
         ☐ same with homepage, sort by popular
     profile: 
         https://canopy.co/mutegdp
+        ✔ details views @done(19-09-17 12:33)
         ☐ desain 
     edit profile: 
         https://canopy.co/mutegdp/edit
-        ☐ editor views   
+        ✔ edit views @done(19-09-17 12:33)
         ☐ desain   
     about: 
         https://canopy.co/about
+        ✔ details views @done(19-09-17 12:35)
         ☐ desain   
     add product: 
         https://canopy.co/add-products
+        ✔ create views @done(19-09-10 01:00)
         ☐ desain   
-        ✔ add product views @done(19-09-10 01:00)

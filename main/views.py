@@ -7,11 +7,12 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.utils import ErrorList
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, Http404
 
 # from django.http import HttpResponseRedirect
-from django.views.generic.edit import CreateView, FormView
+from django.views.generic.edit import CreateView, UpdateView, FormView
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 
 from main import forms, models
 
@@ -95,7 +96,7 @@ class ProductCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) "
-            + "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
         }
         url = form.cleaned_data["product_origin"]
         if "/ref=" in url:
@@ -159,3 +160,27 @@ class ProductCreate(LoginRequiredMixin, CreateView):
                 ["Can't scrape this product, please try another one!"]
             )
             return self.form_invalid(form)
+
+
+class ProfileDetailView(DetailView):
+    model = models.User
+    template_name = "main/profile/read_profile.html"
+
+    def get_object(self, **kwargs):
+        username = self.kwargs.get("username")
+        if username is None:
+            raise Http404
+        return get_object_or_404(models.User, username__iexact=username)
+
+
+class ProfileUpdateView(UpdateView):
+    model = models.User
+    form_class = forms.ProfileForm
+    template_name = "main/profile/update_profile.html"
+    success_url = "/"
+
+    def get_object(self, **kwargs):
+        username = self.kwargs.get("username")
+        if username is None:
+            raise Http404
+        return get_object_or_404(models.User, username__iexact=username)

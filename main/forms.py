@@ -69,3 +69,9 @@ class AuthenticationForm(forms.Form):
 
     def get_user(self):
         return self.user
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = models.User
+        fields = ("email", "username", "password", "first_name", "last_name")
