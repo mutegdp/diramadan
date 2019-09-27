@@ -1,26 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>products</h1>
-
-<div class="card-deck">
+<span class="btn-group float-left" role="group" aria-label="Button group with nested dropdown">
+    <a class="dropdown-item text-primary font-weight-bold" href="#">New</a>
+    <a class="dropdown-item text-success font-weight-bold" href="#">Most Popular</a>
+</span>
+<span class="btn-group float-right" role="group">
+    <a class="dropdown-item text-white bg-primary" href="#">Everything</a>
+    <a class="dropdown-item bg-light" href="#">Under &#36;50</a>
+    <a class="dropdown-item bg-light" href="#">&#10003; Prime</a>
+</span>
+<div class="container card-columns mt-5">
     {% for product in page_obj %}
     <div class="card">
-        <img class="card-img-top" src="{{ product.image }}" alt="Card image cap">
+        <a href="{% url 'product' product.slug %}">
+            <img class="card-img-top" src="{{ product.image }}" alt="Card image cap">
+        </a>
         <div class="card-body">
-            <h5 class="card-title"><a href="{% url 'product' product.slug %}">{{ product.name }}</a></h5>
-            <p class="card-text">{{ product.description|safe }}</p>
+            <h1 class="card-title"><a href="{% url 'product' product.slug %}">{{ product.name|truncatewords:7 }}</a>
+            </h1>
             <p class="card-text">{{ product.price }}</p>
-            <p class="card-text">{{ product.seller }}</p>
         </div>
-        <div class="card-footer">
-            <small class="text-muted">{{ product.date_created|timesince }} ago</small>
+        <div class="card-footer text-center">
+            <!-- <small class="text-muted">{{ product.date_created|timesince }} ago</small> -->
+            by <small class="text-muted">{{ product.seller }}</small>
         </div>
     </div>
     {% endfor %}
 </div>
 
 <nav>
-    <ul class="pagination mt-2">
+    <ul class="pagination justify-content-center mt-2">
         {% if page_obj.has_previous %}
         <li class="page-item">
             <a class="page-link" href="?page={{page_obj.previous_page_number}}">Previous</a>

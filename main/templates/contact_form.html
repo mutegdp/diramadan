@@ -2,13 +2,15 @@
 
 
 {% block content %}
-<h2>Contact us</h2>
-<p>Please fill the from below to contact us</p>
-<form method="POST">
-    {% csrf_token %}
-    {% include 'includes/field.html' with field=form.name %}
-    {% include 'includes/field.html' with field=form.email %}
-    {% include 'includes/field.html' with field=form.message %}
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="container mt-2 mb-5">
+    <h2 class="text-center">Contact us</h2>
+    <p class="text-center">Please fill the from below to contact us</p>
+    <form method="POST">
+        {% csrf_token %}
+        {% include 'includes/field.html' with field=form.name %}
+        {% include 'includes/field.html' with field=form.email %}
+        {% include 'includes/field.html' with field=form.message %}
+        <button type="submit" class="btn btn-primary w-25">Send</button>
+    </form>
+</div>
 {% endblock content %}

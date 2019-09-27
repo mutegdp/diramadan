@@ -2,6 +2,8 @@
 
 
 {% block content %}
-<h1>Hello, {{ user.first_name }} {{ user.last_name }}</h1>
-<a href="/{{ request.user.username }}/edit">Edit Profile</a>
+<div class="container mb-5 text-center">
+    <h2>Hello, {{ user.first_name }} {{ user.last_name }}</h2>
+    <a href="/{{ request.user.username }}/edit">Edit Profile</a>
+</div>
 {% endblock content %}

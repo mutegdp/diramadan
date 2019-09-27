@@ -2,14 +2,17 @@
 
 
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    {% include 'includes/field.html' with field=form.username %}
-    {% include 'includes/field.html' with field=form.email %}
-    {% include 'includes/field.html' with field=form.password %}
-    {% include 'includes/field.html' with field=form.first_name %}
-    {% include 'includes/field.html' with field=form.last_name %}
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="container mb-5">
+    <h2 class="text-center">Update Profile</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% include 'includes/field.html' with field=form.username %}
+        {% include 'includes/field.html' with field=form.email %}
+        {% include 'includes/field.html' with field=form.password %}
+        {% include 'includes/field.html' with field=form.first_name %}
+        {% include 'includes/field.html' with field=form.last_name %}
+        <button type="submit" class="btn btn-primary w-25">Update</button>
+    </form>
+</div>
 {% endblock content %}

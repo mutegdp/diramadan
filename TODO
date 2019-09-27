@@ -1,42 +1,44 @@
 copy the canopy:
+    future:
+        ☐ update via product detail
+        ☐ update via admin
+        ☐ search
     bugs:
         ✔ product url in product detail is error for some format example http://www.amazon.com/dp/B00E49J8TW/?tag=canopyco-20 @critical @done(19-09-17 19:34)
     feature:
         ✔ add this project to version control @critical @done(19-09-17 12:36)
-        ☐ update data by click
-        ☐ update data by bulk (via admin)
         crud:
             ✔ create @done(19-09-10 00:58)
             ✔ read @done(19-09-10 00:58)
     homepage:
         https://canopy.co/
-        ☐ desain 
         ☐ filter by topic 
     details:
         https://canopy.co/product/8022
         ✔ scrape data @done(19-09-10 00:57)
-        ☐ desain  
         ☐ add total page view counter 
-    explore new: 
+    explore under $50: 
         https://canopy.co/explore/new
-        ☐ same as homepage, sort by new 
-        ☐ add filter 
+        ☐ same as homepage, sort by new, price under $50 
+    explore prime: 
+        https://canopy.co/explore/new
+        ☐ same as homepage, sort by new, prime 
     explore popular: 
         https://canopy.co/explore/popular
         ☐ same with homepage, sort by popular
+    related products:
+        ☐ show all related products by tag on product details
     profile: 
         https://canopy.co/mutegdp
         ✔ details views @done(19-09-17 12:33)
-        ☐ desain 
     edit profile: 
         https://canopy.co/mutegdp/edit
         ✔ edit views @done(19-09-17 12:33)
-        ☐ desain   
     about: 
         https://canopy.co/about
         ✔ details views @done(19-09-17 12:35)
-        ☐ desain   
     add product: 
         https://canopy.co/add-products
         ✔ create views @done(19-09-10 01:00)
-        ☐ desain   
+    desain:
+        ✔ web layout @done(19-09-23 21:27)

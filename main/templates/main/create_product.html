@@ -2,11 +2,14 @@
 
 
 {% block content %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    {% include 'includes/field.html' with field=form.product_origin %}
-    {% include 'includes/field.html' with field=form.tags %}
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="container mt-2 mb-5">
+    <h2 class="text-center mb-5">Add product</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% include 'includes/field.html' with field=form.product_origin %}
+        {% include 'includes/field.html' with field=form.tags %}
+        <button type="submit" class="btn btn-primary w-25">Add product</button>
+    </form>
+</div>
 {% endblock content %}

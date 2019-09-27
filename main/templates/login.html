@@ -2,13 +2,15 @@
 
 
 {% block content %}
-<h2>Login</h2>
-<p>Please fill the form below</p>
-<form method="post">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    {% include 'includes/field.html' with field=form.email %}
-    {% include 'includes/field.html' with field=form.password %}
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="container mt-2 mb-5">
+    <h2 class="text-center">Login</h2>
+    <p class="text-center">Please fill the form below</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% include 'includes/field.html' with field=form.email %}
+        {% include 'includes/field.html' with field=form.password %}
+        <button type="submit" class="btn btn-primary w-25">Login</button>
+    </form>
+</div>
 {% endblock content %}

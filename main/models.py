@@ -74,7 +74,7 @@ class Product(models.Model):
     price = models.CharField(max_length=50)
     product_origin = models.URLField()
     seller = models.CharField(max_length=50, blank=True)
-    found_by = models.OneToOneField(User, on_delete=models.CASCADE)
+    found_by = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = models.ManyToManyField("ProductTag", blank=True)
     rating = models.CharField(max_length=100, blank=True)
     slug = models.SlugField(max_length=255, unique=True)

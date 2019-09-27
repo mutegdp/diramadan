@@ -1,4 +1,6 @@
 import logging
+import traceback
+
 
 import requests
 from bs4 import BeautifulSoup
@@ -6,18 +8,68 @@ from django import forms as django_forms
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.utils import IntegrityError
 from django.forms.utils import ErrorList
 from django.shortcuts import Http404, get_object_or_404
 from django.views.generic.detail import DetailView
 
-# from django.http import HttpResponseRedirect
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic.list import ListView
 
 from main import forms, models
 
 logger = logging.getLogger(__name__)
+
+
+def scrape(url):
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
+    }
+    if "/ref=" in url:
+        url = url.split("/ref=")[0]
+    if "?" in url:
+        url = url.split("?")[0]
+    if not url.endswith("/"):
+        url += "/"
+    print("url", url)
+    result = requests.get(url, headers=headers)
+    if result.status_code == 200:
+        soup = BeautifulSoup(result.text, "lxml")
+        title = soup.select_one("span#productTitle").get_text().strip()
+        try:
+            price = (
+                soup.select_one("span.a-size-medium.a-color-price").get_text().strip()
+            )
+        except AttributeError:
+            price = ""
+        try:
+            image = soup.select_one("div img.a-dynamic-image").get("src")
+        except AttributeError:
+            image = soup.select_one("div.imgTagWrapper img").get("src")
+        seller = soup.select_one("div[id*='bylineInfo'] a")
+        if not seller:
+            seller = soup.select_one("a[id*='bylineInfo']")
+        seller = seller.get_text().strip()
+        if seller.startswith("Visit Amazon's"):
+            seller = seller[14:-5]
+        url = url.split("/")[-2]
+        url = f"https://www.amazon.com/dp/{url}/"
+        rating = soup.select_one("#averageCustomerReviews span.a-icon-alt")
+        from_user = soup.find(
+            lambda tag: tag.name == "span" and " customer reviews" in tag.text
+        )
+        rating = f"{rating.get_text().strip()} from {from_user.get_text().strip()}"
+
+        data = {}
+        data["title"] = title
+        data["price"] = price
+        data["image"] = image
+        data["seller"] = seller
+        data["url"] = url
+        data["rating"] = rating
+
+        return data
+    return {}
 
 
 class ContactUsView(FormView):
@@ -33,11 +85,11 @@ class ContactUsView(FormView):
 class HomepageView(ListView):
     model = models.Product
     template_name = "main/product_list.html"
-    paginate_by = 12
+    paginate_by = 15
 
     def get_queryset(self):
         products = models.Product.objects.all()
-        return products.order_by("name")
+        return products.order_by("-date_created")
 
 
 class SignupView(FormView):
@@ -76,72 +128,27 @@ class ProductCreate(LoginRequiredMixin, CreateView):
     success_url = "/"
 
     def form_valid(self, form):
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
-        }
-        url = form.cleaned_data["product_origin"]
-        if "/ref=" in url:
-            url = url.split("/ref=")[0]
-        elif "?" in url:
-            url = url.split("?")[0]
-        if not url.endswith("/"):
-            url += "/"
-        result = requests.get(url, headers=headers)
         try:
-            if result.status_code == 200:
-                soup = BeautifulSoup(result.text, "lxml")
-                title = soup.select_one("span#productTitle").get_text().strip()
-                try:
-                    price = (
-                        soup.select_one("span.a-size-medium.a-color-price")
-                        .get_text()
-                        .strip()
-                    )
-                except AttributeError:
-                    price = ""
-                try:
-                    image = soup.select_one("div img.a-dynamic-image").get("src")
-                except AttributeError:
-                    image = soup.select_one("div.imgTagWrapper img").get("src")
-                seller = soup.select_one("div[id*='bylineInfo'] a")
-                if not seller:
-                    seller = soup.select_one("a[id*='bylineInfo']")
-                seller = seller.get_text().strip()
-                if seller.startswith("Visit Amazon's"):
-                    seller = seller[14:-5]
-                url = url.split("/")[-2]
-                url = f"https://www.amazon.com/dp/{url}/"
-                rating = soup.select_one("#averageCustomerReviews span.a-icon-alt")
-                from_user = soup.find(
-                    lambda tag: tag.name == "span" and " customer reviews" in tag.text
-                )
-                rating = (
-                    f"{rating.get_text().strip()} from {from_user.get_text().strip()}"
-                )
+            url = form.cleaned_data["product_origin"]
+            data = scrape(url)
+            if data["price"]:
+                print(data["price"])
+                form.instance.name = data["title"]
+                form.instance.price = data["price"]
+                form.instance.image = data["image"]
+                form.instance.seller = data["seller"]
+                form.instance.found_by = self.request.user
+                form.instance.product_origin = data["url"]
+                form.instance.rating = data["rating"]
+                return super().form_valid(form)
+            else:
+                traceback.print_exc()
 
-                if price:
-                    form.instance.name = title
-                    form.instance.price = price
-                    form.instance.image = image
-                    form.instance.seller = seller
-                    form.instance.found_by = self.request.user
-                    form.instance.product_origin = url
-                    form.instance.rating = rating
-                    return super().form_valid(form)
-                else:
-                    form._errors[django_forms.forms.NON_FIELD_ERRORS] = ErrorList(
-                        ["Can't scrape this product, please try another one!"]
-                    )
-                    return self.form_invalid(form)
-        except IntegrityError:
-            form._errors[django_forms.forms.NON_FIELD_ERRORS] = ErrorList(
-                ["Can't add this product, product with this URL already exist!"]
-            )
-            return self.form_invalid(form)
+                form._errors[django_forms.forms.NON_FIELD_ERRORS] = ErrorList(
+                    ["Can't scrape this product, please try another one!"]
+                )
+                return self.form_invalid(form)
         except Exception:
-            import traceback
-
             traceback.print_exc()
             form._errors[django_forms.forms.NON_FIELD_ERRORS] = ErrorList(
                 ["Can't scrape this product, please try another one!"]
