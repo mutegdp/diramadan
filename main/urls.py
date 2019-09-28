@@ -1,9 +1,9 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
 from django.views.generic import TemplateView
-from django.views.generic.detail import DetailView
+# from django.views.generic.detail import DetailView
 
-from main import forms, models, views
+from main import forms, views
 
 urlpatterns = [
     path("", views.HomepageView.as_view(), name="home"),
@@ -24,7 +24,7 @@ urlpatterns = [
     path("signup/", views.SignupView.as_view(), name="signup"),
     path("product/add/", views.ProductCreate.as_view(), name="product_add"),
     path(
-        "product/<slug:slug>/", DetailView.as_view(model=models.Product), name="product"
+        "product/<slug:slug>/", views.ProductDetailView.as_view(), name="product"
     ),
     path("explore/<slug:tag>/", views.ProductListView.as_view(), name="products"),
     path("<slug:username>/", views.ProfileDetailView.as_view(), name="update_profile"),

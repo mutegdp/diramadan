@@ -1,0 +1,21 @@
+<div class="well text-center">
+    <div class="col-md-12">Related Products:</div>
+    <div class="row mb-4">
+        {% for product in related_list %}
+        <div class="col-md-4">
+            <a href="{% url 'product' product.slug %}">
+                <img src="{{ product.image }}" alt="{{ product.name|lower }} photo" class="img-fluid">
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        {% for product in random_list %}
+        <div class="col-md-3">
+            <a href="{% url 'product' product.slug %}">
+                <img src="{{ product.image }}" alt="{{ product.name|lower }} photo" class=" img-fluid">
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>

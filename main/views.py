@@ -175,6 +175,38 @@ class ProductListView(ListView):
         return products.order_by("name")
 
 
+class ProductDetailView(DetailView):
+    model = models.Product
+    template_name = "main/product_detail.html"
+
+    def get_object(self, **kwargs):
+        slug = self.kwargs.get("slug")
+        self.slug = slug
+        if slug is None:
+            raise Http404
+        product = get_object_or_404(models.Product, slug__iexact=slug)
+        self.product = product
+        return product
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context["related_list"] = (
+            models.Product.objects.filter(tags__in=self.product.tags.all())
+            .exclude(slug=self.product.slug)
+            .values("slug", "image", "name")
+            .order_by("date_updated")[:3]
+        )
+        context["random_list"] = (
+            models.Product.objects.all()
+            .exclude(slug=self.product.slug)
+            .values("slug", "image", "name")
+            .order_by("date_updated")[:4]
+        )
+        return context
+
+
 class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = models.User
     template_name = "main/profile/read_profile.html"
