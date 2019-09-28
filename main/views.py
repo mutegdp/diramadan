@@ -1,7 +1,6 @@
 import logging
 import traceback
 
-
 import requests
 from bs4 import BeautifulSoup
 from django import forms as django_forms
@@ -10,8 +9,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.utils import ErrorList
 from django.shortcuts import Http404, get_object_or_404
+from django.urls import reverse
 from django.views.generic.detail import DetailView
-
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic.list import ListView
 
@@ -125,7 +124,7 @@ class TagCreate(LoginRequiredMixin, CreateView):
     template_name = "main/create_tag.html"
     fields = ["name"]
 
-    success_url = "/"
+    success_url = "/product/add/"
 
 
 class ProductCreate(LoginRequiredMixin, CreateView):
@@ -135,7 +134,9 @@ class ProductCreate(LoginRequiredMixin, CreateView):
     template_name = "main/create_product.html"
     fields = ["product_origin", "tags"]
 
-    success_url = "/"
+    # success_url = "/"
+    def get_success_url(self):
+        return reverse("product", args=(self.object.slug,))
 
     def form_valid(self, form):
         try:
@@ -182,7 +183,7 @@ class ProductListView(ListView):
         else:
             products = models.Product.objects.all()
 
-        return products.order_by("name")
+        return products.order_by("-date_created")
 
 
 class ProductDetailView(DetailView):
