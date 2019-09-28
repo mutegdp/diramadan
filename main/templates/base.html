@@ -41,7 +41,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link font-weight-bold {% if request.path == '/product/add/' %}active{% endif %}"
-                            href="/product/add/">Add product</a></li>
+                            href="/product/add/">Add product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link font-weight-bold {% if request.path == '/tag/add/' %}active{% endif %}"
+                            href="/tag/add/">Add tag</a>
+                    </li>
                 </ul>
                 <form class="form-inline" action="/action_page.php">
                     <input class="form-control mr-sm-2" type="text" placeholder="Search">

@@ -118,6 +118,16 @@ class SignupView(FormView):
         return response
 
 
+class TagCreate(LoginRequiredMixin, CreateView):
+    login_url = "/login/"
+    redirect_field_name = "next"
+    model = models.ProductTag
+    template_name = "main/create_tag.html"
+    fields = ["name"]
+
+    success_url = "/"
+
+
 class ProductCreate(LoginRequiredMixin, CreateView):
     login_url = "/login/"
     redirect_field_name = "next"

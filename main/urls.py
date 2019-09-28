@@ -23,6 +23,7 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(next_page="/"), name="logout"),
     path("signup/", views.SignupView.as_view(), name="signup"),
     path("product/add/", views.ProductCreate.as_view(), name="product_add"),
+    path("tag/add/", views.TagCreate.as_view(), name="tag_add"),
     path(
         "product/<slug:slug>/", views.ProductDetailView.as_view(), name="product"
     ),
