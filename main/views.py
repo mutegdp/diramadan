@@ -169,13 +169,17 @@ class ProductCreate(LoginRequiredMixin, CreateView):
 
 class ProductListView(ListView):
     template_name = "main/product_list.html"
-    paginate_by = 4
+    paginate_by = 18
 
     def get_queryset(self):
         tag = self.kwargs["tag"]
         self.tag = None
 
-        if tag != "all":
+        if tag == "all" or tag == "popular":
+            products = models.Product.objects.all()
+            if tag == "popular":
+                return products.order_by("-product_views")
+        else:
             self.tag = get_object_or_404(models.ProductTag, slug=tag)
 
         if self.tag:
