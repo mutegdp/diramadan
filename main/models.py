@@ -80,6 +80,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     in_stock = models.BooleanField(default=True)
     image = models.ImageField(blank=True)
+    product_views = models.IntegerField(default=0)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 

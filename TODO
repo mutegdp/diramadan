@@ -1,7 +1,7 @@
 copy the canopy:
     future:
-        ☐ update via product detail
-        ☐ update via admin
+        ☐ update via product detail (like refresh button)
+        ☐ bulk update via admin
         ☐ search
     bugs:
         ✔ product url in product detail is error for some format example http://www.amazon.com/dp/B00E49J8TW/?tag=canopyco-20 @critical @done(19-09-17 19:34)
@@ -16,7 +16,7 @@ copy the canopy:
     details:
         https://canopy.co/product/8022
         ✔ scrape data @done(19-09-10 00:57)
-        ☐ add total page view counter 
+        ✔ add total page view counter @done(19-10-01 11:30)
     explore under $50: 
         https://canopy.co/explore/new
         ☐ same as homepage, sort by new, price under $50 
@@ -27,7 +27,7 @@ copy the canopy:
         https://canopy.co/explore/popular
         ☐ same with homepage, sort by popular
     related products:
-        ☐ show all related products by tag on product details
+        ✔ show all related products by tag on product details @done(19-09-28 07:58)
     profile: 
         https://canopy.co/mutegdp
         ✔ details views @done(19-09-17 12:33)

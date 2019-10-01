@@ -11,8 +11,9 @@
         <img src="{{ object.image }}" class="img-fluid rounded mx-auto d-block mb-2" alt="cover" />
         <table class="table text-center">
             <tr>
-                <td>
-                    <a href="{{ object.product_origin }}" target="_blank" class="btn btn-success p-3 w-50">
+                <td class="w-auto">
+                    <a href="{{ object.product_origin }}" target="_blank" style="width: auto !important;"
+                        class=" w-auto btn btn-success p-3 w-50">
                         {{ object.price }} on Amazon
                     </a>
                 </td>
@@ -20,7 +21,8 @@
             <p class="text-center">This product made by {{ object.seller }} and get rating {{ object.rating }}. Listed
                 in
                 this site found by @{{ object.found_by.username }} on {{ object.date_updated|date:"d F Y" }}, with tags:
-                {{ object.tags.all|join:","|default:"No tags available" }}</p>
+                {{ object.tags.all|join:","|default:"No tags available" }}. This product viewed by
+                {{ object.product_views }} people.</p>
             </tr>
         </table>
     </div>

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<span class="btn-group float-left" role="group" aria-label="Button group with nested dropdown">
+<span class="btn-group float-left bg-white" role="group" aria-label="Button group with nested dropdown">
     <a class="dropdown-item text-primary font-weight-bold" href="#">New</a>
     <a class="dropdown-item text-success font-weight-bold" href="#">Most Popular</a>
 </span>
@@ -9,7 +9,27 @@
     <a class="dropdown-item bg-light" href="#">Under &#36;50</a>
     <a class="dropdown-item bg-light" href="#">&#10003; Prime</a>
 </span>
-<div class="container card-columns mt-5">
+<hr class="mb-5">
+<div class="container text-center">
+    <div class="row mb-4">
+        {% for product in page_obj %}
+        <div class="card col-md-2 mx-auto mb-1 px-1">
+            <a href="{% url 'product' product.slug %}">
+                <img src="{{ product.image }}" alt="{{ product.name|lower }} photo" class="img-fluid mt-2">
+            </a>
+            <div class="card-body px-0 py-0"></div>
+            <div class="card-footer text-center px-0">
+                <h1 class="card-title"><a
+                        href="{% url 'product' product.slug %}">{{ product.name|truncatechars:20 }}</a>
+                </h1>
+                <p class="card-text bg-info text-white font-weight-bold">{{ product.price }}</p>
+                <div class="text-black">by</div> <small class="text-muted">{{ product.seller }}</small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- <div class="container card-columns mt-5">
     {% for product in page_obj %}
     <div class="card">
         <a href="{% url 'product' product.slug %}">
@@ -21,12 +41,11 @@
             <p class="card-text">{{ product.price }}</p>
         </div>
         <div class="card-footer text-center">
-            <!-- <small class="text-muted">{{ product.date_created|timesince }} ago</small> -->
             by <small class="text-muted">{{ product.seller }}</small>
         </div>
     </div>
     {% endfor %}
-</div>
+</div> -->
 
 <nav>
     <ul class="pagination justify-content-center mt-2">

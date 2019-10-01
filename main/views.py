@@ -84,7 +84,7 @@ class ContactUsView(FormView):
 class HomepageView(ListView):
     model = models.Product
     template_name = "main/product_list.html"
-    paginate_by = 15
+    paginate_by = 18
 
     def get_queryset(self):
         products = models.Product.objects.all()
@@ -196,7 +196,9 @@ class ProductDetailView(DetailView):
         if slug is None:
             raise Http404
         product = get_object_or_404(models.Product, slug__iexact=slug)
-        self.product = product
+        # product page views
+        product.product_views = product.product_views + 1
+        product.save()
         return product
 
     def get_context_data(self, **kwargs):
@@ -204,14 +206,14 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
         context["related_list"] = (
-            models.Product.objects.filter(tags__in=self.product.tags.all())
-            .exclude(slug=self.product.slug)
+            models.Product.objects.filter(tags__in=self.object.tags.all())
+            .exclude(slug=self.object.slug)
             .values("slug", "image", "name")
             .order_by("date_updated")[:3]
         )
         context["random_list"] = (
             models.Product.objects.all()
-            .exclude(slug=self.product.slug)
+            .exclude(slug=self.object.slug)
             .values("slug", "image", "name")
             .order_by("date_updated")[:4]
         )
